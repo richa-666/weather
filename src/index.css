@@ -2,8 +2,8 @@
 
 :root {
   font-family: 'DM Sans', 'Segoe UI', sans-serif;
-  color: #19354a;
-  background: #f7f9f8;
+  color: #202c35;
+  background: #f7f7f3;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -31,11 +31,11 @@ input {
 button:focus-visible,
 input:focus-visible,
 a:focus-visible {
-  outline: 3px solid #82cdb6;
+  outline: 3px solid #9aa5f0;
   outline-offset: 3px;
 }
 
 ::selection {
-  background: #c8eee2;
-  color: #183d50;
+  background: #e3e7ff;
+  color: #293761;
 }

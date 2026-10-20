@@ -145,6 +145,10 @@ function App() {
             <span className="brand-mark" aria-hidden="true">✳</span>
             <span>Richa<span className="brand-period">.</span></span>
           </a>
+          <nav className="top-nav" aria-label="Weather sections">
+            <a className="nav-link active" href="#today">Overview</a>
+            <a className="nav-link" href="#forecast">Forecast</a>
+          </nav>
           <form className="search-form" onSubmit={handleSearch} role="search">
             <span className="search-icon" aria-hidden="true">⌕</span>
             <input
@@ -172,7 +176,7 @@ function App() {
           </div>
         )}
 
-        <section className="current-weather" aria-label="Current weather">
+        <section className="current-weather" id="today" aria-label="Current weather">
           {isLoading && !weather ? (
             <div className="loading-state" role="status">Finding your forecast<span>...</span></div>
           ) : weather ? (
@@ -251,7 +255,7 @@ function App() {
               </div>
             </section>
 
-            <section className="forecast-section" aria-label="Five day forecast">
+            <section className="forecast-section" id="forecast" aria-label="Five day forecast">
               <div className="section-heading forecast-heading">
                 <div>
                   <p className="eyebrow">COMING UP</p>
