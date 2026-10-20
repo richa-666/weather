@@ -143,7 +143,7 @@ function App() {
         <header className="topbar">
           <a className="brand" href="/" aria-label="Breezy home">
             <span className="brand-mark" aria-hidden="true">✳</span>
-            <span>breezy<span className="brand-period">.</span></span>
+            <span>Richa<span className="brand-period">.</span></span>
           </a>
           <form className="search-form" onSubmit={handleSearch} role="search">
             <span className="search-icon" aria-hidden="true">⌕</span>
