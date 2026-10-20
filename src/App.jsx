@@ -32,6 +32,8 @@ const weatherDescriptions = {
   99: ['Thunderstorm with hail', '⛈️'],
 }
 
+const refreshInterval = 15 * 60 * 1000
+
 function getCondition(code) {
   return weatherDescriptions[code] ?? ['Mixed conditions', '🌤️']
 }
@@ -75,6 +77,7 @@ async function fetchWeatherForLocation(query, signal) {
     place,
     current: forecast.current,
     daily: forecast.daily,
+    timezoneAbbreviation: forecast.timezone_abbreviation,
   }
 }
 
@@ -87,12 +90,14 @@ function App() {
     window.location.hash === '#help' ? 'help' : 'overview'
   ))
   const requestController = useRef(null)
+  const selectedLocation = useRef('London')
 
-  const loadLocation = useCallback(async (query) => {
+  const loadLocation = useCallback(async (query, { showLoading = true } = {}) => {
     requestController.current?.abort()
     const controller = new AbortController()
     requestController.current = controller
-    setIsLoading(true)
+    selectedLocation.current = query
+    if (showLoading) setIsLoading(true)
     setError('')
 
     try {
@@ -103,13 +108,14 @@ function App() {
         setError(requestError instanceof Error ? requestError.message : 'Something went wrong. Please try again.')
       }
     } finally {
-      if (!controller.signal.aborted) setIsLoading(false)
+      if (!controller.signal.aborted && showLoading) setIsLoading(false)
     }
   }, [])
 
   useEffect(() => {
     const controller = new AbortController()
     requestController.current = controller
+    selectedLocation.current = 'London'
 
     fetchWeatherForLocation('London', controller.signal)
       .then(setWeather)
@@ -124,6 +130,14 @@ function App() {
 
     return () => controller.abort()
   }, [])
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      loadLocation(selectedLocation.current, { showLoading: false })
+    }, refreshInterval)
+
+    return () => window.clearInterval(intervalId)
+  }, [loadLocation])
 
   useEffect(() => {
     function updateActivePage() {
@@ -147,6 +161,9 @@ function App() {
       month: 'long',
       day: 'numeric',
     })
+    : ''
+  const currentDataTime = weather?.current.time
+    ? `${weather.current.time.slice(11, 16)}${weather.timezoneAbbreviation ? ` ${weather.timezoneAbbreviation}` : ''}`
     : ''
 
   return (
@@ -224,8 +241,10 @@ function App() {
                 <h2>Powered by Open-Meteo</h2>
                 <p>
                   Weather and location information is provided by Open-Meteo.
-                  Search and forecast require an internet connection, and the
-                  available forecast depends on the selected location.
+                  The dashboard refreshes automatically every 15 minutes while
+                  it is open. An internet connection is required, and no API
+                  key or extra setup is needed. Current conditions are
+                  model-based data and may not be a live weather-station reading.
                 </p>
                 <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">
                   Visit Open-Meteo <span aria-hidden="true">↗</span>
@@ -275,7 +294,7 @@ function App() {
               <div className="current-footer">
                 <span>Feels like <strong>{Math.round(weather.current.apparent_temperature)}°</strong></span>
                 <span className="footer-divider" aria-hidden="true" />
-                <span>Updated just now</span>
+                <span>Weather data time: <strong>{currentDataTime}</strong></span>
               </div>
             </>
           ) : (
