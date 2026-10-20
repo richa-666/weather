@@ -83,6 +83,9 @@ function App() {
   const [locationInput, setLocationInput] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [activePage, setActivePage] = useState(() => (
+    window.location.hash === '#help' ? 'help' : 'overview'
+  ))
   const requestController = useRef(null)
 
   const loadLocation = useCallback(async (query) => {
@@ -122,6 +125,15 @@ function App() {
     return () => controller.abort()
   }, [])
 
+  useEffect(() => {
+    function updateActivePage() {
+      setActivePage(window.location.hash === '#help' ? 'help' : 'overview')
+    }
+
+    window.addEventListener('hashchange', updateActivePage)
+    return () => window.removeEventListener('hashchange', updateActivePage)
+  }, [])
+
   function handleSearch(event) {
     event.preventDefault()
     const query = locationInput.trim()
@@ -146,8 +158,21 @@ function App() {
             <span>Richa<span className="brand-period">.</span></span>
           </a>
           <nav className="top-nav" aria-label="Weather sections">
-            <a className="nav-link active" href="#today">Overview</a>
+            <a
+              className={`nav-link${activePage === 'overview' ? ' active' : ''}`}
+              href="#today"
+              aria-current={activePage === 'overview' ? 'page' : undefined}
+            >
+              Overview
+            </a>
             <a className="nav-link" href="#forecast">Forecast</a>
+            <a
+              className={`nav-link${activePage === 'help' ? ' active' : ''}`}
+              href="#help"
+              aria-current={activePage === 'help' ? 'page' : undefined}
+            >
+              Help
+            </a>
           </nav>
           <form className="search-form" onSubmit={handleSearch} role="search">
             <span className="search-icon" aria-hidden="true">⌕</span>
@@ -163,6 +188,53 @@ function App() {
           </form>
         </header>
 
+        {activePage === 'help' ? (
+          <section className="help-page" aria-labelledby="help-title">
+            <div className="help-intro">
+              <p className="eyebrow">A QUICK GUIDE</p>
+              <h1 id="help-title">Weather, without the guesswork.</h1>
+              <p>
+                Richa makes it easy to check what the weather is doing now
+                and what to expect over the next few days.
+              </p>
+            </div>
+
+            <div className="help-card-grid">
+              <article className="help-card">
+                <span className="help-card-number">01</span>
+                <h2>Find a place</h2>
+                <p>Use the search box in the top bar to look up a city. The dashboard updates with local conditions and the forecast for your selected location.</p>
+              </article>
+              <article className="help-card">
+                <span className="help-card-number">02</span>
+                <h2>Read today&apos;s weather</h2>
+                <p>The overview shows the current temperature and what it feels like, along with humidity, wind speed, and current precipitation.</p>
+              </article>
+              <article className="help-card">
+                <span className="help-card-number">03</span>
+                <h2>Plan ahead</h2>
+                <p>The five-day forecast includes each day&apos;s conditions, chance of precipitation, and expected high and low temperatures.</p>
+              </article>
+            </div>
+
+            <aside className="help-data-card">
+              <div className="help-data-icon" aria-hidden="true">✳</div>
+              <div>
+                <p className="eyebrow">ABOUT THE WEATHER DATA</p>
+                <h2>Powered by Open-Meteo</h2>
+                <p>
+                  Weather and location information is provided by Open-Meteo.
+                  Search and forecast require an internet connection, and the
+                  available forecast depends on the selected location.
+                </p>
+                <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">
+                  Visit Open-Meteo <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </aside>
+          </section>
+        ) : (
+          <>
         <section className="intro">
           <p className="eyebrow">YOUR PERSONAL WEATHER, AT A GLANCE</p>
           <h1>A little sunshine in your day.</h1>
@@ -293,6 +365,8 @@ function App() {
           <span>Made for wherever the day takes you.</span>
           <span>Weather data by Open-Meteo</span>
         </footer>
+          </>
+        )}
       </div>
     </main>
   )

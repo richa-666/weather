@@ -45,13 +45,10 @@
 }
 
 .top-nav {
-  position: absolute;
-  left: 50%;
   display: flex;
   align-items: center;
   gap: 30px;
   height: 100%;
-  transform: translateX(-50%);
 }
 
 .nav-link {
@@ -660,17 +657,151 @@
   font-size: 9px;
 }
 
+.help-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 58px 0 24px;
+}
+
+.help-intro {
+  max-width: 660px;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+
+.help-intro h1 {
+  margin: 12px 0 10px;
+  color: #202c35;
+  font-size: clamp(30px, 5vw, 43px);
+  font-weight: 650;
+  letter-spacing: -2px;
+  line-height: 1.1;
+}
+
+.help-intro > p:last-child {
+  max-width: 530px;
+  margin: 0 auto;
+  color: #788286;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.help-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.help-card {
+  min-height: 190px;
+  padding: 21px 20px;
+  border: 1px solid #e8e9e5;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 5px 18px rgb(48 52 44 / 3%);
+}
+
+.help-card-number {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  border-radius: 10px;
+  background: #edf0ff;
+  color: #596de0;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.help-card h2,
+.help-data-card h2 {
+  margin: 19px 0 7px;
+  color: #293842;
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.3px;
+}
+
+.help-card p,
+.help-data-card p:not(.eyebrow) {
+  margin: 0;
+  color: #7e888c;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.help-data-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+  margin-top: 16px;
+  padding: 23px;
+  border: 1px solid #e4e8f5;
+  border-radius: 15px;
+  background: linear-gradient(115deg, #f0f2ff, #f5f8fa);
+}
+
+.help-data-icon {
+  display: grid;
+  width: 39px;
+  height: 39px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 12px;
+  background: #fff;
+  color: #596de0;
+  font-size: 22px;
+}
+
+.help-data-card h2 {
+  margin: 7px 0 5px;
+}
+
+.help-data-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 12px;
+  color: #4f62d0;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.help-data-card a:hover {
+  color: #3548b5;
+  text-decoration: underline;
+}
+
 @media (max-width: 700px) {
   .app-shell {
     padding: 0 20px 34px;
   }
 
   .topbar {
+    flex-wrap: wrap;
     min-height: 74px;
+    padding: 12px 0 0;
   }
 
   .top-nav {
-    display: none;
+    position: static;
+    display: flex;
+    width: 100%;
+    height: 39px;
+    justify-content: center;
+    order: 3;
+    gap: 30px;
+    transform: none;
+  }
+
+  .search-form {
+    width: min(100%, 270px);
+  }
+
+  .nav-link {
+    height: 100%;
+    font-size: 11px;
   }
 
   .intro {
@@ -728,6 +859,18 @@
     min-height: 161px;
     padding-right: 4px;
     padding-left: 4px;
+  }
+
+  .help-page {
+    padding-top: 40px;
+  }
+
+  .help-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .help-card {
+    min-height: auto;
   }
 }
 
@@ -858,5 +1001,18 @@
   .page-footer {
     gap: 10px;
     font-size: 8px;
+  }
+
+  .help-intro h1 {
+    font-size: 31px;
+  }
+
+  .help-intro > p:last-child {
+    font-size: 12px;
+  }
+
+  .help-data-card {
+    gap: 12px;
+    padding: 17px;
   }
 }
